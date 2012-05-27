@@ -1,0 +1,29 @@
+{
+  "name": "Cybozu Notifier",
+  "version": "0.9.2",
+  "description": "サイボウズ予定を通知",
+  "options_page": "option.html",
+  "background_page": "background.html",
+  "browser_action": {
+    "default_icon": "icon.png", // アイコンの画像ファイル
+    "default_title":"Cybozu Notifier",// ツールチップ
+    "popup": "popup.html" // ポップアップ表示されるHTMLファイル
+  },
+  "content_scripts":[
+    {
+      "matches":["https://*/*",
+          "http://*/*"],
+      "js":["lib/jquery-1.7.1.min.js",
+          "lib/jquery.hoverIntent.js",
+          "lib/cluetip/jquery.cluetip.js", "lib/user-popup.js"],
+      "css":["lib/cluetip/jquery.cluetip.css"]
+    }
+  ],
+  "permissions": [
+    "tabs",
+    "background",
+    "notifications",
+    "https://*/*",
+    "http://*/*"
+  ]
+}

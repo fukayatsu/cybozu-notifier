@@ -1,0 +1,59 @@
+###
+前提:
+  必要なパッケージ
+    npm install -g coffee-script
+    npm install -g jasmine-node
+  ディレクトリ構成
+    /src    #*.coffee
+    /lib    #*.js
+    /spec   #*.spec.coffee
+###
+
+fs = require 'fs'
+{print} = require 'util'
+{spawn} = require 'child_process'
+
+build = (callback) ->
+  coffee = spawn 'coffee', ['-c', '-b', '-o', 'lib', 'src']
+  coffee.stderr.on 'data', (data) ->
+    print 'build OK\n'
+    process.stderr.write data.toString()
+  coffee.stdout.on 'data', (data) ->
+    print 'build ERROR\n'
+    print data.toString()
+  coffee.on 'exit', (code) ->
+    callback?() if code is 0
+
+doTest = (callback) ->
+   jasmine = spawn 'jasmine-node', ['--coffee', 'spec']
+   jasmine.stderr.on 'data', (data) ->
+     process.stderr.write data.toString()
+   jasmine.stdout.on 'data', (data) ->
+     print data.toString()
+     callback?()
+
+
+task 'build', 'Build lib/ from src/', ->
+  build()
+
+task 'test', 'Build lib/ from src/, and test by spec/', ->
+  build(doTest)
+
+task 'watch', 'watch src/ and spec/, and build and test', ->
+  for dir in ['spec','src'] then do(dir)->
+    files = fs.readdirSync dir
+    for file in files then do(file) ->
+      #ファイル名は*.coffeeに限定する
+      return unless file.match /.coffee$/
+      path = "#{dir}/#{file}"
+      print "watch: #{path}\n"
+      fs.watchFile "#{path}",
+        {persistent: true, interval: 1000 },
+        (curr, prev) ->
+          if +curr.mtime isnt +prev.mtime
+            print "*** #{new Date()}\nModifed: #{path}\n"
+            invoke 'test'
+
+  print "\n*** #{new Date()}\nStart\n"
+  invoke 'test'
+

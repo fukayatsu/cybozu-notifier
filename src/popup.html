@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <style>
+      #main-table{
+        width: 420;
+      }
+      #title{
+        font-size: 22px;
+        color: red;
+      }
+    </style>
+    <script src="bootstrap/js/jquery.js"></script>
+    <script src="lib/popup.js"></script>
+    <script src="bootstrap/js/bootstrap-tab.js"></script>
+  </head>
+  <body onload="init()">
+    <div class="tabbable tabs">
+      <ul class="nav nav-pills pull-right">
+        <li id="tab1"><a href="#content1" data-toggle="tab" onClick="tab(1)">未読の通知</a></li>
+        <li id="tab2"><a href="#content2" data-toggle="tab" onClick="tab(2)">本日の予定</a></li>
+        <li><a href="" target="_blank" id="title">Cybozu</a></li>
+        <!--
+        <li><a href="https://caga.cyberagent.co.jp/cgi-bin/cbgrn/grn.cgi/portal/index?" target="_blank" id="title">Cybozu</a></li>
+        -->
+        <li><a href="#" onClick="config()"><i class="icon-cog"></i></a></li>
+        <li><a href="#" onClick="refresh()"><i class="icon-refresh"></i></a></li>
+      </ul>
+    </div>
+    <div>
+      <div id="main-table">
+        <div class='tab-content'>
+          <div class='tab-pane' id='content1'>
+            <table class="table" id="table-pending"></table>
+          </div>
+          <div class='tab-pane' id='content2'>
+            <table class="table" id="table-today"></table>
+          </div>
+        </div>
+      </div>
+      <form class="well form-search">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="text" class="input-midium search-query" placeHolder="ユーザー/施設" id="query"></input>
+          <button class="btn" onClick="search()"><i class="icon-search"></i></button>
+      </form>
+    </div>
+  </body>
+</html>
+

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Cybozu Notifier Options</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="bootstrap/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="bootstrap/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="bootstrap/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="bootstrap/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body onload="init()">
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <!-- ???
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            -->
+          </a>
+          <a class="brand">Cybozu Notifier</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li>
+                <a href = "#" id="version">v?.?.?</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class = "row">
+        <div class = "span2">
+          <div class="tabbable tabs-left">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab1" data-toggle="tab">Basic Settings</a></li>
+              <li><a href="#tab2" data-toggle="tab">Advanced Settings</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class = "span10">
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab1">
+              <form class="form-horizontal">
+                <fieldset>
+                  <legend>Cybozu login</legend>
+                  <div class="control-group">
+                    <!-- id -->
+                    <label class="control-label" for="_account">ID</label>
+                    <div class="controls">
+                      <input type="text" class="input-xlarge" id="_account">
+                    </div>
+                    <br>
+                    <!-- password -->
+                    <label class="control-label" for="_password">Password</label>
+                    <div class="controls">
+                      <input type="password" class="input-xlarge" id="_password">
+                    </div>
+                    <br>
+                    <br>
+                    <label class="control-label" for="login-test">Test</label>
+                    <div class="controls">
+                      <button class="btn" id="login-test" onclick="loginTest()">Login to cybozu</button>
+                    </div>
+
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+            <div class="tab-pane" id="tab2">
+              <form class="form-horizontal">
+                <fieldset>
+                  <legend>Notification</legend>
+                  <div class="control-group">
+
+                    <label class="control-label" for="eventBefore">予定のリマインド</label>
+                    <div class="controls">
+                      <div class = "input-append">
+                        <input type="text" class="input-mini" id="eventBefore"><span class="add-on">分 前</span>
+                      </div>
+                      <p class="help-block">"0分前"にすると通知されません</p>
+                    </div>
+                    <br>
+
+                    <label class="control-label" for="closeAfter">通知の表示時間</label>
+                    <div class="controls">
+                      <div class="input-append">
+                        <input type="text" class="input-mini" id="closeAfter"><span class="add-on">秒 間</span>
+                      <p class="help-block">"0秒間"にすると通知が自動的に消えません</p>
+                      </div>
+                    </div>
+                    <br>
+
+                    <label class="control-label" for="eventCheckInterval">予定のチェック</label>
+                    <div class="controls">
+                      <div class="input-append">
+                        <input type="text" class="input-mini" id="eventCheckInterval"><span class="add-on">秒 毎</span>
+                      <p class="help-block">通知すべき予定があるかローカルでチェックします</p>
+                      </div>
+                    </div>
+                  </div>
+                  <legend>Sync</legend>
+                    <label class="control-label" for="cybozuUrl">個人ポータルのURL</label>
+                    <div class="controls">
+                      <input type="text" class="input-xlarge" id="cybozuUrl">
+                    </div>
+                    <br>
+
+                    <label class="control-label" for="serverCheckInterval">予定の同期間隔</label>
+                    <div class="controls">
+                      <div class = "input-append">
+                        <input type="text" class="input-mini" id="serverCheckInterval"><span class="add-on">分 毎</span>
+                      <p class="help-block">サーバ負荷軽減のため、30分以上を推奨します</p>
+                      </div>
+                    </div>
+                </fieldset>
+              </form>
+            </div>
+          </div><!-- /tab-content -->
+          <form class="form-horizontal">
+            <fieldset>
+              <div class="form-actions">
+                <button class="btn btn-primary" onclick="saveAndClose()">保存して閉じる</button>
+                <button class="btn" onclick="resetOptions()">デフォルトに戻す</button>
+              </div>
+            <fieldset>
+          </form>
+        </div><!-- span10 -->
+      </div> <!-- /row -->
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="bootstrap/js/jquery.js"></script>
+    <script src="lib/option.js"></script>
+    <script src="bootstrap/js/bootstrap-tab.js"></script>
+
+<!--
+    <script src="bootstrap/js/bootstrap-transition.js"></script>
+    <script src="bootstrap/js/bootstrap-alert.js"></script>
+    <script src="bootstrap/js/bootstrap-modal.js"></script>
+    <script src="bootstrap/js/bootstrap-dropdown.js"></script>
+    <script src="bootstrap/js/bootstrap-scrollspy.js"></script>
+    <script src="bootstrap/js/bootstrap-tooltip.js"></script>
+    <script src="bootstrap/js/bootstrap-popover.js"></script>
+    <script src="bootstrap/js/bootstrap-button.js"></script>
+    <script src="bootstrap/js/bootstrap-collapse.js"></script>
+    <script src="bootstrap/js/bootstrap-carousel.js"></script>
+    <script src="bootstrap/js/bootstrap-typeahead.js"></script>
+-->
+  </body>
+</html>
+
